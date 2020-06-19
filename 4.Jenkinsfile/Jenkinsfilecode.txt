@@ -1,0 +1,37 @@
+ 
+
+
+
+pipeline {
+    agent  { label 'linux' }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
+        }
+       
+        }
+        stage('Validate') {
+            steps {
+                echo 'This step is going to validate the EBS snapshot'
+                sh '''
+
+                mysnapshot=`echo $env.snapshotname`
+               snapShotStatus=`aws describe-snapshots $mysnapshot --status`
+                 if [ $snapShotStatus == "complete" ]; then
+               echo "Snapshot is valid for restore"
+                 else
+                echo "Snapshot is not valid for restore"
+                fi
+
+
+               '''
+ 1   
+            }
+        }
+    }
+}                                 
+        }                     
+     
